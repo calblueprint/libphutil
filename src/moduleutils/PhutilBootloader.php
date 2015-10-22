@@ -197,7 +197,18 @@ final class PhutilBootloader {
     return array_keys($this->registeredLibraries);
   }
 
+  public function resolveEnvironmentVariables($string) {
+    return preg_replace_callback(
+      '|\\$(\w+)|',
+      function ($match) {
+        return $_ENV[$match[1]];
+      },
+      $string
+    );
+  }
+
   public function loadLibrary($path) {
+    $path = $this->resolveEnvironmentVariables($path);
     $root = null;
     if (!empty($_SERVER['PHUTIL_LIBRARY_ROOT'])) {
       if ($path[0] != '/') {
