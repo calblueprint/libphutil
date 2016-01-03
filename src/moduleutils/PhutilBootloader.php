@@ -201,7 +201,7 @@ final class PhutilBootloader {
     return preg_replace_callback(
       '|\\$(\w+)|',
       function ($match) {
-        return $_ENV[$match[1]];
+        return getenv($match[1]);
       },
       $string
     );
